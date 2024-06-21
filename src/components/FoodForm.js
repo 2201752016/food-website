@@ -31,6 +31,23 @@ export default function FoodForm({ defaultFormData, isEdit }) {
     }
   };
 
+  const onDelete = async () => {
+    const urlDelete = `https://api-bootcamp.do.dibimbing.id/api/v1/delete-food/${router.query.id}`;
+    const headers = {
+      apiKey: 'w05KkI9AWhKxzvPFtXotUva-',
+      'Content-Type': 'application/json',
+      Authorization:
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1pZnRhaGZhcmhhbkBnbWFpbC5jb20iLCJ1c2VySWQiOiJjYTIzZDdjYy02Njk1LTQzNGItODE2Yy03ZTlhNWMwNGMxNjQiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NjE4NzUzMjF9.wV2OECzC25qNujtyb9YHyzYIbYEV-wud3TQsYv7oB4Q',
+    };
+
+    try {
+      const resp = await axios.delete(urlDelete, { headers });
+      if (resp.data.code === '200') router.push('/');
+    } catch (error) {
+      console.error('Failed to delete the food:', error);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -70,7 +87,11 @@ export default function FoodForm({ defaultFormData, isEdit }) {
       <button type="submit" className="px-4 py-1 mt-2 text-white bg-blue-700 rounded-full">
         {isEdit ? 'Update Makanan' : 'Buat Makanan'}
       </button>
+      {isEdit && (
+        <button type="button" onClick={onDelete} className="px-4 py-1 mt-2 text-white bg-red-700 rounded-full">
+          Hapus Makanan
+        </button>
+      )}
     </form>
   );
 }
-
